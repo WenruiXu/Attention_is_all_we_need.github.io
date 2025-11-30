@@ -426,6 +426,8 @@
             </div>
             <div class="stats" id="stats">
                 Messages exchanged: <strong id="messageCount">0</strong>
+                | Time left: <strong id="timeLeft">5:00</strong>
+
             </div>
             <div class="input-area">
                 <input type="text" id="userInput" placeholder="Type your message...">
@@ -470,13 +472,15 @@
 
         function updateStartButton() {
             const hasConsent = consentCheck.checked;
-            // const hasApiKey = apiKeyInput.value.trim().length > 0;
-            startBtn.disabled = !(hasConsent);
+            const hasApiKey = apiKeyInput.value.trim().length > 0;
+            startBtn.disabled = !(hasConsent && hasApiKey);
         }
 
         // Start chat
         startBtn.addEventListener('click', () => {
-            state.apiKey = apiKeyInput;
+            startChatTimer();
+
+            state.apiKey = apiKeyInput.value.trim();
             const random_condition = Math.random();
             if(random_condition >= 0.5) state.condition = "emotional";
             else state.condition = "neutral";
@@ -500,9 +504,10 @@
 
         // Send initial greeting
         async function sendInitialGreeting() {
-            const productType = "Chocolate"
+            let productType = "Chocolate"
             const random_result = Math.random();
-            if(random_result >= 0.5) productType="dish soap";
+            console.log(random_result)
+            if(random_result >= 0.5){productType="Dish Soap"};
             const greetingPrompt = `Introduce yourself first. Start the conversation by greeting the user and asking about their preferences for ${productType}. Keep it brief and engaging.`;
             await sendToChatGPT(greetingPrompt, true);
             const usergreeting = `I am intersted in ${productType}, please give me a brief recommendation.`;
@@ -664,6 +669,68 @@
         };
 
         console.log('Chat interface ready. Use exportData() in console to download conversation data.');
+
+        let chatTimer = null;
+
+        let countdownInterval = null;
+
+        function startChatTimer() {
+            // Clear any previous timers if user somehow restarts
+            if (chatTimer) clearTimeout(chatTimer);
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            const TIME_LIMIT = 300000; // 5 minutes
+            const endTime = Date.now() + TIME_LIMIT;
+
+            // Hard stop after 5 minutes
+            chatTimer = setTimeout(endChatSession, TIME_LIMIT);
+
+            // Immediately show full time once
+            updateTimeLeft(endTime);
+
+            // Update every second
+            countdownInterval = setInterval(() => {
+                updateTimeLeft(endTime);
+            }, 1000);
+
+            console.log("⏳ 5-minute chat timer started");
+        }
+
+        function updateTimeLeft(endTime) {
+            const msLeft = endTime - Date.now();
+            const timeLeftEl = document.getElementById("timeLeft");
+            if (!timeLeftEl) return;  // safety
+
+            if (msLeft <= 0) {
+                clearInterval(countdownInterval);
+                timeLeftEl.textContent = "0:00";
+                return;
+            }
+
+            const secondsLeft = Math.floor(msLeft / 1000);
+            const min = Math.floor(secondsLeft / 60);
+            const sec = secondsLeft % 60;
+
+            timeLeftEl.textContent = `${min}:${sec.toString().padStart(2, "0")}`;
+        }
+
+        function endChatSession() {
+            // Stop timers
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            // Stop input
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+
+            // Add system message
+            addMessage(
+                "⏰ **The chat session has ended after 5 minutes.**<br>Thank you for participating!",
+                "bot"
+            );
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            console.log("⛔ Chat session ended due to timeout");
+        }
     </script>
 </body>
 </html>
