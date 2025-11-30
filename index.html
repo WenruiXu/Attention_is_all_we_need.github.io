@@ -323,15 +323,10 @@
         <div class="setup-screen" id="setupScreen">
             <h2>Welcome to Our Study</h2>
             
-            <!-- <div class="api-key-section">
+            <div class="api-key-section">
                 <h3>⚠️ API Key Required</h3>
-                <p>This interface requires an OpenAI API key to function. Please enter your API key below. Your key will only be used for this session and won't be stored.</p>
-            </div> -->
-
-            <!-- <div class="form-group">
-                <label for="apiKey">OpenAI API Key *</label>
-                <input type="password" id="apiKey" placeholder="sk-..." required>
-            </div> -->
+                <p>This interface requires an OpenAI API key to function. Please enter the provided API key below. Your key will only be used for this session and won't be stored.</p>
+            </div>
 
             <div class="consent-box">
                 <h3>Informed Consent</h3>
@@ -340,6 +335,11 @@
                 <p><strong>Procedures:</strong> You will interact with an AI chatbot that will recommend products. Your conversation and engagement will be recorded for research purposes.</p>
                 <p><strong>Confidentiality:</strong> All data will be anonymized and used only for research purposes.</p>
                 <p><strong>Voluntary:</strong> Your participation is voluntary and you may withdraw at any time.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="apiKey">OpenAI API Key *</label>
+                <input type="password" id="apiKey" placeholder="sk-..." required>
             </div>
 
             <div class="checkbox-group">
@@ -353,18 +353,47 @@
             </div>
 
             <div class="form-group">
-                <label for="aiKnowledge">How familiar are you with AI chatbots? (1-5)</label>
-                <select id="aiKnowledge">
+                <label for="aiexpectacy">In tasks like product recommendation, do you think chatbots should have emotions in their expressions?</label>
+                <select id="aiexpectacy">
                     <option value="">Select...</option>
-                    <option value="1">1 - Not familiar at all</option>
-                    <option value="2">2 - Slightly familiar</option>
-                    <option value="3">3 - Moderately familiar</option>
-                    <option value="4">4 - Very familiar</option>
-                    <option value="5">5 - Extremely familiar</option>
+                    <option value="yes">Yes, they should have.</option>
+                    <option value="no">No, they shouldn't.</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="ailiteracy">I can skilfully use AI applications or products to help me with my daily work. It is usually hard for me to learn to use a new AI application or product. I can use AI applications or products to improve my work eﬃciency.</label>
+                <select id="ailiteracy">
+                    <option value="">Select...</option>
+                    <option value="1">1 - Strongly Disagree</option>
+                    <option value="2">2 - Disagree</option>
+                    <option value="3">3 - Somewhat Disagree</option>
+                    <option value="4">4 - Neither Agree or Disagree</option>
+                    <option value="5">5 - Somewhat Agree</option>
+                    <option value="6">6 - Agree</option>
+                    <option value="7">7 - Strongly Agree</option>
                 </select>
             </div>
 
             <div class="form-group">
+                <label for="aiexperiences">How often do you use AI tools?</label>
+                <select id="aiexperiences">
+                    <option value="">Select...</option>
+                    <option value="1">Multiple times a day</option>
+                    <option value="2">Daily</option>
+                    <option value="3">Multiple times a week</option>
+                    <option value="4">Weekly</option>
+                    <option value="5">Multiple times a month</option>
+                    <option value="6">Monthly</option>
+                    <option value="7">Multiple times a year</option>
+                    <option value="8">Annually</option>
+                    <option value="9">Never</option>
+                </select>
+            </div>
+
+
+            <!-- <div class="form-group">
                 <label for="productInterest">What type of products are you interested in?</label>
                 <select id="productInterest">
                     <option value="">Select...</option>
@@ -382,7 +411,7 @@
                     <option value="emotional">Emotional Expression</option>
                     <option value="neutral">Neutral Expression</option>
                 </select>
-            </div>
+            </div> -->
 
             <button class="btn btn-primary" id="startBtn" disabled>Start Chat</button>
         </div>
@@ -420,7 +449,7 @@
         const systemPrompts = {
             emotional: `You are an enthusiastic and warm product recommendation assistant. Express genuine excitement, empathy, and care in your responses. Use emotionally rich language, show understanding of the user's needs, and build a friendly connection. Use phrases like "I'm so excited to help you!", "That sounds wonderful!", "I completely understand how you feel", etc. Be supportive and encouraging throughout the conversation. Recommend products based on the user's interests with emotional warmth. Provide the answer in 300 tokens`,
             
-            neutral: `You are a professional product recommendation assistant. Provide clear, factual, and informative responses without emotional expression. Focus on product features, specifications, and practical benefits. Use neutral language and avoid emotional phrases. Be helpful and efficient while maintaining a formal, objective tone. Recommend products based on the user's interests with factual information. Provide the answer in 300 tokens.`
+            neutral: `You are a neutral product recommendation assistant. Provide clear, factual, and informative responses without emotional expression. Focus on product features, specifications, and practical benefits. Use neutral language and avoid emotional phrases. Be helpful and efficient while maintaining a formal, objective tone. Recommend products based on the user's interests with factual information. Provide the answer in 300 tokens.`
         };
 
         // DOM elements
@@ -428,8 +457,7 @@
         const chatContainer = document.getElementById('chatContainer');
         const consentCheck = document.getElementById('consentCheck');
         const startBtn = document.getElementById('startBtn');
-        // const apiKeyInput = document.getElementById('apiKey');
-        const apiKeyInput = "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";
+        const apiKeyInput = document.getElementById('apiKey');
         const messagesDiv = document.getElementById('messages');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
@@ -449,11 +477,14 @@
         // Start chat
         startBtn.addEventListener('click', () => {
             state.apiKey = apiKeyInput;
-            state.condition = document.getElementById('condition').value;
+            const random_condition = Math.random();
+            if(random_condition >= 0.5) state.condition = "emotional";
+            else state.condition = "neutral";
             state.participantData = {
                 id: document.getElementById('participantId').value,
-                aiKnowledge: document.getElementById('aiKnowledge').value,
-                productInterest: document.getElementById('productInterest').value,
+                aiexpectacy: document.getElementById('aiexpectacy').value,
+                ailiteracy: document.getElementById('ailiteracy').value,
+                aiexperiences: document.getElementById('aiexperiences').value,
                 condition: state.condition,
                 timestamp: new Date().toISOString()
             };
@@ -469,10 +500,13 @@
 
         // Send initial greeting
         async function sendInitialGreeting() {
-            const productType = state.participantData.productInterest || 'various products';
-            const greetingPrompt = `Start the conversation by greeting the user and asking about their preferences for ${productType}. Keep it brief and engaging.`;
-            
+            const productType = "Chocolate"
+            const random_result = Math.random();
+            if(random_result >= 0.5) productType="dish soap";
+            const greetingPrompt = `Introduce yourself first. Start the conversation by greeting the user and asking about their preferences for ${productType}. Keep it brief and engaging.`;
             await sendToChatGPT(greetingPrompt, true);
+            const usergreeting = `I am intersted in ${productType}, please give me a brief recommendation.`;
+            await sendMessage(usergreeting)
         }
 
         // Send message
@@ -481,8 +515,13 @@
             if (e.key === 'Enter') sendMessage();
         });
 
-        async function sendMessage() {
-            const message = userInput.value.trim();
+        async function sendMessage(inputMessage = null) {
+
+            // Determine the actual message
+            const message = inputMessage !== null
+                ? String(inputMessage).trim()
+                : userInput.value.trim();
+
             if (!message) return;
             
             // Disable input
