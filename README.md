@@ -1,8 +1,9 @@
 
 
 # The web page of the final project for CSCI 5541 F25
-# CSCI-5541-Final-Project
+
 Team Name: Attention is all we need
+
 **Authors:** Wenwen Cao, Jikai Sun, Wenrui Xu, Zishu Wang
 
 
@@ -85,3 +86,4 @@ The dataset consists of **participants’ survey responses** (ratings for engage
 - Conversations were not stored, preventing linguistic/behavioral analysis.
 - Emotion manipulation was text-only (no multimodal emotion).
 - Future plans: larger sample, consented conversation logging, more product categories, compare different LLMs, explore adaptive emotional strategies. 
+
