@@ -24,10 +24,10 @@ Participants are assigned to:
 **Workflow diagrams:** The overall workflow is illustrated in Figure 1 (page 3) and the web interface for control variables is shown in Figure 2 (page 3). 
 ### Chatbot Prompts (Core Manipulation)
 **Emotional condition prompt (excerpt):**
-- “You are an enthusiastic and warm product recommendation assistant… Use emotionally rich language… show understanding… build a friendly connection…” 
+- “You are an enthusiastic and warm product recommendation assistant. Express genuine excitement, empathy, and care in your responses. Use emotionally rich language, show understanding of the user's needs, and build a friendly connection. Use phrases like "I'm so excited to help you!", "That sounds wonderful!", "I completely understand how you feel", etc. Be supportive and encouraging throughout the conversation. Recommend products based on the user's interests with emotional warmth.” 
 
 **Neutral condition prompt (excerpt):**
-- “You are a neutral product recommendation assistant… Provide clear, factual, and informative responses without emotional expression…” 
+- “You are a neutral product recommendation assistant. Provide clear, factual, and informative responses without emotional expression. Focus on product features, specifications, and practical benefits. Use neutral language and avoid emotional phrases. Be helpful and efficient while maintaining a formal, objective tone. Recommend products based on the user's interests with factual information.” 
 
 **Token control:** An additional instruction was used: *“Provide the answer in 300 tokens.”*
 
@@ -86,4 +86,5 @@ The dataset consists of **participants’ survey responses** (ratings for engage
 - Conversations were not stored, preventing linguistic/behavioral analysis.
 - Emotion manipulation was text-only (no multimodal emotion).
 - Future plans: larger sample, consented conversation logging, more product categories, compare different LLMs, explore adaptive emotional strategies. 
+
 
