@@ -23,7 +23,7 @@ Participants are assigned to:
 
 **Workflow diagrams:** The overall workflow is illustrated in the figure. 
 <div align="center"> 
-  <img src="Fig/Workflow_overall.png" width="45%" alt="overall workflow"/> 
+  <img src="Fig/Workflow_overall.png" width="100%" alt="overall workflow"/> 
 </div>
 
 ### Chatbot Prompts (Core Manipulation)
@@ -90,6 +90,7 @@ The dataset consists of **participants’ survey responses** (ratings for engage
 - Conversations were not stored, preventing linguistic/behavioral analysis.
 - Emotion manipulation was text-only (no multimodal emotion).
 - Future plans: larger sample, consented conversation logging, more product categories, compare different LLMs, explore adaptive emotional strategies. 
+
 
 
 
