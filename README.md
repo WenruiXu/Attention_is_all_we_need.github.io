@@ -21,7 +21,11 @@ Participants are assigned to:
 1. **Chatbot style:** Emotional vs. Neutral  
 2. **Product type:** Hedonic (chocolate) vs. Utilitarian (dish soap) 
 
-**Workflow diagrams:** The overall workflow is illustrated in Figure 1 (page 3) and the web interface for control variables is shown in Figure 2 (page 3). 
+**Workflow diagrams:** The overall workflow is illustrated in the figure. 
+<div align="center"> 
+  <img src="Fig/workflow_overall.png" width="45%" alt="overall workflow"/> 
+</div>
+
 ### Chatbot Prompts (Core Manipulation)
 **Emotional condition prompt (excerpt):**
 - “You are an enthusiastic and warm product recommendation assistant. Express genuine excitement, empathy, and care in your responses. Use emotionally rich language, show understanding of the user's needs, and build a friendly connection. Use phrases like "I'm so excited to help you!", "That sounds wonderful!", "I completely understand how you feel", etc. Be supportive and encouraging throughout the conversation. Recommend products based on the user's interests with emotional warmth.” 
@@ -86,5 +90,6 @@ The dataset consists of **participants’ survey responses** (ratings for engage
 - Conversations were not stored, preventing linguistic/behavioral analysis.
 - Emotion manipulation was text-only (no multimodal emotion).
 - Future plans: larger sample, consented conversation logging, more product categories, compare different LLMs, explore adaptive emotional strategies. 
+
 
 
